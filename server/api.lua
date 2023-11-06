@@ -120,7 +120,9 @@ function GetIdentifierById(player)
 
     -- For QBCore
     if Config.framework == 'qbcore' then
-        return _g.QBCore.Functions.GetIdentifier(player, 'license')
+        --local player = exports.qbx_core:GetPlayer(source)
+        --return _g.QBCore.Functions.GetIdentifier(player, 'license')
+        return _g.player.PlayerData.citizenid
     end
 
     -- For Standalone

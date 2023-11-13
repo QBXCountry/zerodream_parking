@@ -85,7 +85,8 @@ RegisterServerCallback('zerodream_parking:getPlayerData', function(source, cb)
     end
     if Config.framework == 'qbcore' then
         --local identifier = _g.QBCore.Functions.GetIdentifier(_source, 'license')
-        local identifier = exports.qbx_core:GetPlayerByCitizenId(_source)
+		local Player = exports.qbx_core:GetPlayer(_source)
+        local identifier = Player.PlayerData.citizenid
         cb({ identifier = identifier })
         return
     end

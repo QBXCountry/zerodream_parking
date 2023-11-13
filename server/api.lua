@@ -12,7 +12,7 @@ function GetPlayerJob(player)
 
     -- For QBCore
     if Config.framework == 'qbcore' then
-        local player = _g.QBCore.Functions.GetPlayer(player)
+        local player = exports.qbx_core:GetPlayer(player)
         return player.PlayerData.job.name
     end
 
@@ -34,7 +34,7 @@ function GetPlayerNickname(source)
 
     -- For QBCore
     if Config.framework == 'qbcore' then
-        local player = _g.QBCore.Functions.GetPlayer(source)
+        local player = exports.qbx_core:GetPlayer(source)
         return player and player.PlayerData.name or GetPlayerName(source)
     end
 
@@ -54,7 +54,7 @@ function GetPlayerMoney(player)
 
     -- For QBCore
     if Config.framework == 'qbcore' then
-        local player = _g.QBCore.Functions.GetPlayer(player)
+        local player = exports.qbx_core:GetPlayer(player)
         return player.PlayerData.money['cash']
     end
 
@@ -74,7 +74,7 @@ function RemovePlayerMoney(player, amount)
 
     -- For QBCore
     if Config.framework == 'qbcore' then
-        local player = _g.QBCore.Functions.GetPlayer(player)
+        local player = exports.qbx_core:GetPlayer(player)
         player.Functions.RemoveMoney('cash', amount)
         return
     end
@@ -95,7 +95,7 @@ function IsPlayerHaveParkingCard(player)
 
     -- For QBCore
     if Config.framework == 'qbcore' then
-        local player = _g.QBCore.Functions.GetPlayer(player)
+        local player = exports.qbx_core:GetPlayer(player)
         if player and player.PlayerData then
             local item = player.Functions.GetItemByName(Config.parkingCard)
             return item and item.amount > 0
@@ -120,9 +120,8 @@ function GetIdentifierById(player)
 
     -- For QBCore
     if Config.framework == 'qbcore' then
-        --local player = exports.qbx_core:GetPlayer(source)
-        --return _g.QBCore.Functions.GetIdentifier(player, 'license')
-        return _g.player.PlayerData.citizenid
+        --return exports.qbx_core:GetIdentifier(player, 'license')
+        return exports.qbx_core:GetPlayerByCitizenId(player)
     end
 
     -- For Standalone

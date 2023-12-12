@@ -48,6 +48,7 @@ function CreateParkingCar(payload)
     end
     --local vehicle = CreateVehicle(model, payload.position, 0.0, false, false)
     local netId = lib.callback.await('zerodream_parking:server:spawnVehicle', false, model, payload.position)
+    local timeout = 100
     while not NetworkDoesEntityExistWithNetworkId(netId) and timeout > 0 do
         Wait(10)
         timeout -= 1

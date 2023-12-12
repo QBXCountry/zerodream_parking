@@ -51,7 +51,7 @@ function CheckDatabase()
     end
 
     -- Set owner column size to 255
-    MySQL.Sync.execute('ALTER TABLE `parking_vehicles` CHANGE COLUMN `owner` `owner` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;')
+    --MySQL.Sync.execute('ALTER TABLE `parking_vehicles` CHANGE COLUMN `owner` `owner` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;')
 
     -- Check if parking card exists
     if Config.framework == 'esx' or Config.framework == 'esx1.9' then
@@ -76,7 +76,7 @@ function CheckDatabase()
             print("^1Parking Card has been added to the database, you should restart your server to take effect!^0")
         end
     end
-
+--[[
     if Config.framework == 'qbcore' then
         exports['qb-core']:AddItem(Config.parkingCard, {
             name        = Config.parkingCard,
@@ -90,9 +90,8 @@ function CheckDatabase()
             combinable  = nil,
             description = 'Allow you park your vehicle for free',
         })
-    end
+    end]]
 end
-
 -- Get clean plate number
 function GetCleanPlateNumber(plate)
     return plate and plate:gsub("%s+", "") or ""

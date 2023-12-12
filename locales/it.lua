@@ -1,0 +1,28 @@
+Locales = Locales or {}
+
+Locales['it'] = {
+    ['PRESS_TO_SAVE_VEHICLE']  = "Press %s to save your vehicle",
+    ['PRESS_TO_TAKE_VEHICLE']  = "Press %s to drive your vehicle",
+    ['PRESS_TO_STOP_ENGINE']   = "Press %s to stop the engine",
+    ['PRESS_TO_PAY_PARK_FEE']  = "Press %s to pay ~g~$%s~s~ for parking fees",
+    ['IMPOUND_INVALID_ARGS']   = "Invalid args, use /impound <plate>",
+    ['NOT_ALLOWED_PERMISSION'] = "You have no permission to use this command",
+    ['KEY_ENGINE_CONTROL']     = "Use to control engine on/off",
+    ['KEY_PARKING_VEHICLES']   = "Use to parking your vehicle",
+    ['NOT_IN_DRIVER_SEAT']     = "Devi essere al posto del guidatore",
+    ['VEHICLE_ALREADY_PARKED'] = "A vehicle with same plate is already park on this parking",
+    ['VEHICLE_PARKED_SUCCESS'] = "Veicolo parcheggiato con successo",
+    ['FIND_VEHICLE_INVALID']   = "Invalid args, use /findveh <plate>",
+    ['VEHICLE_NOT_FOUND']      = "Devi specificare la targa",
+    ['VEHICLE_FOUND']          = "Veicolo segnato sulla mappa",
+    ['VEHICLE_NOT_ALLOWED']    = "Non puoi parcheggiare questo veicolo qui",
+    ['VEHICLE_NOT_OWNED']      = "Non hai le chiavi di questo veicolo",
+    ['ERROR_PARKING_FULL']     = "Non puoi parcheggiare qui perché ci sono troppi veicoli",
+    ['NOT_ENOUGH_MONEY']       = "Non hai abbastanza soldi per pagare il parcheggio, devi pagare $%s",
+    ['VEHICLE_TAKE_SUCCESS']   = "Ora puoi guidare il tuo veicolo",
+    ['VEHICLE_PAID_SUCCESS']   = "Hai pagato ~g~$%d~s~ e ora puoi guidare il tuo veicolo",
+    ['IMPOUND_SUCCESS']        = "Il veicolo è stato sequestrato con successo",
+    ['STOP_ENGINE_FIRST']      = "Devi prima spegnere il motore",
+    ['VEHICLE_INFO']           = "~r~%s~s~\n~y~Owner:~s~ %s~s~\n~g~Plate:~s~ %s\n~b~Fees: ~s~$%s~s~",
+    ['VEHICLE_IS_MOVING']      = "Devi fermare la tua macchina prima di parcheggiarla",
+}

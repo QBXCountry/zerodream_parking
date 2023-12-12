@@ -247,7 +247,7 @@ function OnVehicleStored(player, parking, plate)
     -- For QBCore
     if Config.framework == 'qbcore' then
         MySQL.Async.execute('UPDATE player_vehicles SET state = @state WHERE citizenid = @citizenid AND plate = @plate', {
-            ['@state']     = 1,
+            ['@state']     = 5,
             ['@citizenid'] = GetIdentifierById(player),
             ['@plate']     = plate
         })
@@ -301,7 +301,7 @@ function OnVehicleImpounded(player, parking, plate)
     -- For QBCore
     if Config.framework == 'qbcore' then
         MySQL.Async.execute('UPDATE player_vehicles SET state = @state WHERE citizenid = @citizenid AND plate = @plate', {
-            ['@state']     = 0,
+            ['@state']     = 2,
             ['@citizenid'] = GetIdentifierById(player),
             ['@plate']     = plate
         })

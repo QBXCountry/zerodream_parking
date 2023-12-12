@@ -6,7 +6,8 @@
 function GetVehicleExtraData(vehicle)
     -- For Standalone
     return {
-        damage = GetVehicleDamageData(vehicle),
+        --damage = GetVehicleDamageData(vehicle),
+		damage = lib.getVehicleProperties(vehicle)
     }
 end
 
@@ -15,7 +16,9 @@ end
 function SetVehicleExtraData(vehicle, data)
     -- For Standalone
     if data and data.damage then
-        SetVehicleDamageData(vehicle, data.damage)
+        --SetVehicleDamageData(vehicle, data.damage)
+		lib.setVehicleProperties(vehicle, data.damage)
+
     end
 end
 

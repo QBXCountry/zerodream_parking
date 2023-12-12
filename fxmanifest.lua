@@ -8,9 +8,11 @@ version     '1.0.3'
 url         'https://github.com/kasuganosoras/zerodream_parking'
 
 shared_scripts {
+    '@ox_lib/init.lua',
+	'@qbx_core/modules/playerdata.lua',
+    '@qbx_core/shared/locale.lua',
     'config.lua',
     'locales/*.lua',
-    '@es_extended/imports.lua',
 }
 
 client_scripts {
@@ -35,3 +37,5 @@ exports {
 server_exports {
     'ImpoundVehicle',
 }
+
+lua54 'yes'

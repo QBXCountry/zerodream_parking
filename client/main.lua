@@ -47,15 +47,20 @@ function CreateParkingCar(payload)
         Citizen.Wait(0)
     end
     local vehicle = CreateVehicle(model, payload.position, 0.0, false, false)
+	local chiave = exports.ox_inventory:Search("count", "vehiclekey", {payload.plate})
+	--print('chiavezerodream ' ..chiave)
+	--print(json.encode(payload.plate, { indent = true }))
+	--print('plate '..payload.plate)
     SetEntityCoordsNoOffset(vehicle, payload.position)
     SetEntityRotation(vehicle, payload.rotation, 2, true)
     SetVehicleOnGroundProperly(vehicle)
-    if Config.lockedCar or payload.owner ~= _g.identifier then
+    if Config.lockedCar or payload.owner ~= _g.identifier or chiave == 0 then
         SetVehicleDoorsLocked(vehicle, 2)
         SetVehicleDoorsLockedForAllPlayers(vehicle, true)
         SetVehicleUndriveable(vehicle, true)
     end
-    SetVehicleProperties(vehicle, payload.props)
+    --SetVehicleProperties(vehicle, payload.props)
+	lib.setVehicleProperties(vehicle, payload.props)
     SetVehicleEngineOn(vehicle, false, false, false)
     SetEntityAsMissionEntity(vehicle, true, true)
     SetModelAsNoLongerNeeded(model)
@@ -153,7 +158,7 @@ function ParkingAction(parkingName, vehicle)
                     model     = GetEntityModel(vehicle),
                     class     = GetVehicleClass(vehicle),
                     plate     = GetVehicleNumberPlateText(vehicle),
-                    props     = GetVehicleProperties(vehicle),
+                    props     = lib.getVehicleProperties(vehicle), --GetVehicleProperties(vehicle),
                     position  = GetEntityCoords(vehicle),
                     rotation  = GetEntityRotation(vehicle, 2),
                     data      = GetVehicleExtraData(vehicle),
@@ -197,7 +202,7 @@ function ParkingAction(parkingName, vehicle)
                 end
                 FreezeEntityPosition(vehicle, false)
                 SetEntityInvincible(vehicle, false)
-                SetVehicleDoorsLocked(vehicle, 0)
+                SetVehicleDoorsLocked(vehicle, 1)
                 SetVehicleDoorsLockedForAllPlayers(vehicle, false)
                 SetVehicleUndriveable(vehicle, false)
                 _g.ignoreEntity = NetworkGetNetworkIdFromEntity(vehicle)
@@ -290,7 +295,8 @@ AddEventHandler('zerodream_parking:syncDamage', function(vehicle, damageData)
     end
     vehicle = NetworkGetEntityFromNetworkId(vehicle)
     if DoesEntityExist(vehicle) then
-        SetVehicleDamageData(vehicle, damageData)
+        --SetVehicleDamageData(vehicle, damageData)
+		lib.setVehicleProperties(vehicle, data.damage)
     end
 end)
 
@@ -336,8 +342,8 @@ Citizen.CreateThread(function()
     if Config.framework == 'qbcore' then
         DebugPrint('Waiting for QBCore load...')
         _g.QBCore = exports['qb-core']:GetCoreObject()
-        while not _g.QBCore.Functions.GetPlayerData() do
-            Wait(10)
+		while not LocalPlayer.state.isLoggedIn do
+            Wait(500)
         end
     end
 
@@ -423,7 +429,7 @@ Citizen.CreateThread(function()
             local vehNames  = GetLabelText(GetDisplayNameFromVehicleModel(_g.closeVehicle.props.model))
             local ownerName = _g.closeVehicle.name
             local parkFees  = GetParkingFeeByCar(_g.closeVehicle)
-            AdvancedDrawText3D(position, _UF('VEHICLE_INFO', vehNames, ownerName, _g.closeVehicle.plate, parkFees))
+            --AdvancedDrawText3D(position, _UF('VEHICLE_INFO', vehNames, ownerName, _g.closeVehicle.plate, parkFees))
         else
             Wait(500)
         end

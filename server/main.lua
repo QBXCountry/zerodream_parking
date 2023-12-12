@@ -84,8 +84,9 @@ function ImpoundVehicle(player, plate)
             })
         end
         if Config.framework == 'qbcore' then
-            MySQL.Sync.execute('UPDATE player_vehicles SET state = @state WHERE plate = @plate', {
-                ['@state'] = '0',
+            MySQL.Sync.execute('UPDATE player_vehicles SET garage = @garage, state = @state WHERE plate = @plate', {
+                ['@garage'] = 'impoundlotpaleto',
+				['@state'] = 2,
                 ['@plate'] = _plate
             })
         end
@@ -207,6 +208,7 @@ RegisterServerCallback('zerodream_parking:saveVehicle', function(source, cb, pay
     local _source = source
     local plate   = GetCleanPlateNumber(payload.plate)
     local checker = IsAllowedParking(_source, payload.parking, plate)
+	local chiave = exports.ox_inventory:Search(_source, "count", "vehiclekey", {plate}) --keyitem
     if plate then
         local result  = MySQL.Sync.fetchAll('SELECT * FROM parking_vehicles WHERE plate = @plate', {
             ['@plate'] = plate
@@ -224,7 +226,8 @@ RegisterServerCallback('zerodream_parking:saveVehicle', function(source, cb, pay
                 message = _U('VEHICLE_NOT_ALLOWED'),
             })
         -- Check is owned vehicle
-        elseif not Config.notOwnedCar and not IsOwnedVehicle(_source, plate) then
+        elseif chiave == 0 then --not Config.notOwnedCar and not IsOwnedVehicle(_source, plate) or chiave == 0 then
+		print(chiave)
             cb({
                 success = false,
                 message = _U('VEHICLE_NOT_OWNED'),
@@ -242,6 +245,10 @@ RegisterServerCallback('zerodream_parking:saveVehicle', function(source, cb, pay
             })
         -- Pass the test, storage to database
         else
+			MySQL.update('UPDATE player_vehicles SET engine = ?, body = ?, mods = ? WHERE plate = ?', {json.encode(payload.data.damage.engineHealth), json.encode(payload.data.damage.bodyHealth), json.encode(payload.props), plate})
+			--print(json.encode(payload.data, { indent = true }))
+			print(json.encode(payload.data.damage.bodyHealth, { indent = true }))
+			print(json.encode(payload.data.damage.engineHealth, { indent = true }))
             MySQL.Async.execute('INSERT INTO parking_vehicles (plate, owner, name, position, properties, data, time, parking) VALUES (@plate, @owner, @name, @position, @properties, @data, @time, @parking)', {
                 ['@plate']      = plate,
                 ['@owner']      = GetIdentifierById(_source),
@@ -290,11 +297,15 @@ RegisterServerCallback('zerodream_parking:driveOutVehicle', function(source, cb,
     local _source    = source
     local identifier = GetIdentifierById(_source)
     local _plate     = GetCleanPlateNumber(plate)
+	local chiave = exports.ox_inventory:Search(_source, "count", "vehiclekey", {plate}) --keyitem
+	--print('plate ' .._plate)
+	--print('chiave ' ..chiave)
     local result  = MySQL.Sync.fetchAll('SELECT * FROM parking_vehicles WHERE plate = @plate', {
         ['@plate'] = _plate
     })
     if type(result) == 'table' and result[1] ~= nil then
-        if result[1].owner == identifier then
+        if result[1].owner == identifier or chiave >=1 then
+		--if chiave >=1 then --keyitem
             local parkingCrd  = IsPlayerHaveParkingCard(_source)
             local parkingFee  = parkingCrd and 0 or GetParkingFee(result[1].parking, result[1].time)
             local playerMoney = GetPlayerMoney(_source)

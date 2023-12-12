@@ -46,8 +46,14 @@ function CreateParkingCar(payload)
     while not HasModelLoaded(model) do
         Citizen.Wait(0)
     end
-    local vehicle = CreateVehicle(model, payload.position, 0.0, false, false)
-	local chiave = exports.ox_inventory:Search("count", "vehiclekey", {payload.plate})
+    --local vehicle = CreateVehicle(model, payload.position, 0.0, false, false)
+    local netId = lib.callback.await('zerodream_parking:server:spawnVehicle', false, model, payload.position)
+    while not NetworkDoesEntityExistWithNetworkId(netId) and timeout > 0 do
+        Wait(10)
+        timeout -= 1
+    end
+    local vehicle = NetworkGetEntityFromNetworkId(netId)
+    local chiave = exports.ox_inventory:Search("count", "vehiclekey", {payload.plate})
 	--print('chiavezerodream ' ..chiave)
 	--print(json.encode(payload.plate, { indent = true }))
 	--print('plate '..payload.plate)

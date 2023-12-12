@@ -355,6 +355,11 @@ RegisterServerCallback('zerodream_parking:driveOutVehicle', function(source, cb,
     end
 end)
 
+lib.callback.register('zerodream_parking:server:spawnVehicle', function(source, vehicleName, vehicleCoords)
+	local netId = SpawnVehicle(source, vehicleName, vehicleCoords, true)
+	return netId
+end)
+
 MySQL.ready(function()
     CheckDatabase()
 end)
